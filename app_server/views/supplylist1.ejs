@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="homePage">
+    <h4 class="font-weight-bold" style="text-align: center;">
+      Transactions
+    </h4>
+    <h5 class="font-weight-bold" style="text-align: center;">
+      Total Events: <%=result.length%>
+    </h5>
+  </div>
+  <table class="table table-hover">
+    <thead class='text-dark' style="background-color: #e3f2fd;">
+      <tr>
+        <th>appraisedValue</th>
+        <th>assetID</th>
+        <th>color</th>
+        <th>owner</th>
+        <th>size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%for(let i=0; i< result.length; i++){%>
+        <tr class="bg-light">
+          <th>
+            <%=result[i].appraisedValue%>
+          </th>
+          <th>
+            <%=result[i].assetID%>
+          </th>
+          <th>
+            <%=result[i].color%>
+          </th>
+          <th>
+            <%=result[i].owner%>
+          </th>
+          <th>
+            <%=result[i].size%>
+          </th>
+        </tr>
+        <%}%>
+    </tbody>
+    
+  </table>
+</div>

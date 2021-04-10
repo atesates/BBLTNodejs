@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="homePage">
+    <h4 class="font-weight-bold" style="text-align: center;">
+      Products
+    </h4>
+  </div>
+  <table class="table table-hover">
+    <thead class='text-dark' style="background-color: #e3f2fd;">
+      <tr>
+        <th>name</th>
+        <th>owner</th>
+        <th>value</th>
+        <th>numberOf</th>
+        <th>status</th>
+        <th>supplier</th>
+        <th>issueDate</th>
+        <th>demander</th>
+        <th>expirationDate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%for(let i=0; i< result.length; i++){%>
+        <tr class="bg-light">
+          <th>
+            <%=result[i].name%>
+          </th>
+          <th>
+            <%=result[i].owner%>
+          </th>
+          <th>
+            <%=result[i].value%>
+          </th>
+          <th>
+            <%=result[i].numberOf%>
+          </th>
+          <th>
+            <%=result[i].status%>
+          </th>
+          <th>
+            <%=result[i].supplier%>
+          </th>
+          <th>
+            <%=result[i].issueDate%>
+          </th>
+          <th>
+            <%=result[i].demander%>
+          </th>
+          <th>
+            <%=result[i].expirationDate%>
+          </th>
+        </tr>
+        <%}%>
+    </tbody>
+    
+  </table>
+</div>
+
+
