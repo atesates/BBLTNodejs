@@ -1,0 +1,2 @@
+Method,Name,Error,Occurrences
+GET,/supply/supplylist,"('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",106

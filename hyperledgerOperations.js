@@ -139,7 +139,7 @@ async function createSupply() {
 			// This will be sent to both peers and if both peers endorse the transaction, the endorsed proposal will be sent
 			// to the orderer to be committed by each of the peer's to the channel ledger.
 			console.log('\n--> Submit Transaction: addNewProduct, creates new product with arguments');
-			let result = await contract.submitTransaction('addNewProduct', 'Pharmacy1_AUGBID_01.01.2021_' +  preId, 'AUGBID_01.01.2020','AUGBID',  'Pharmacy1','13','65','03.03.2033','01.03.2020','on sale', '03.04.2020','Pharmacy1',  '' );
+			let result = await contract.submitTransaction('AddNewProduct', 'Pharmacy10_AUGBID_01.01.2021_' +  preId, 'AUGBID_01.01.2020','AUGBID',  'Pharmacy1','13','65','03.03.2033','01.03.2020','on sale', '03.04.2020','Pharmacy1',  '' , '2');
 			console.log('*** Result: committed');
 
 			if (`${result}` !== '') {
@@ -156,7 +156,72 @@ async function createSupply() {
 		console.error(`******** FAILED to run the application: ${error}`);
 	}
 }
+async function createPurchase() {
+	try {
+		// build an in memory object with the network configuration (also known as a connection profile)
+		const ccp = buildCCPOrg1();
 
+		// build an instance of the fabric ca services client based on
+		// the information in the network configuration
+		const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
+
+		// setup the wallet to hold the credentials of the application user
+		const wallet = await buildWallet(Wallets, walletPath);
+
+		// Create a new gateway instance for interacting with the fabric network.
+		// In a real application this would be done as the backend server session is setup for
+		// a user that has been verified.
+		const gateway = new Gateway();
+		console.log('Creating Gateaway..');
+
+		try {
+			// setup the gateway instance
+			// The user will now be able to create connections to the fabric network and be able to
+			// submit transactions and query. All transactions submitted by this gateway will be
+			// signed by this user using the credentials stored in the wallet.
+			await gateway.connect(ccp, {
+				wallet,
+				identity: org1UserId,
+				discovery: { enabled: true, asLocalhost: true },
+				eventHandlerOptions:{
+					strategy: null
+				} 
+				// using asLocalhost as this gateway is using a fabric network deployed locally
+			});
+			console.log('Connecting to Gateaway..');
+
+
+			// Build a network instance based on the channel where the smart contract is deployed
+			const network = await gateway.getNetwork(channelName);
+			console.log('Building network..');
+
+			// Get the contract from the network.
+			const contract = network.getContract(chaincodeName);
+			console.log('Getting the contract..');
+
+			var preId = Math.floor(Math.random() * 10000)
+			console.log('preId;' + preId)
+			// Now let's try to submit a transaction.
+			// This will be sent to both peers and if both peers endorse the transaction, the endorsed proposal will be sent
+			// to the orderer to be committed by each of the peer's to the channel ledger.
+			console.log('\n--> Submit Transaction: addNewProduct, creates new product with arguments');
+			let result = await contract.submitTransaction("PurchaseSomeProduct", "Pharmacy2_AUGBID_02.02.2021", "Pharmacy3", "1","1");
+			console.log('*** Result: committed');
+
+			if (`${result}` !== '') {
+				console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+			}
+			
+		} finally {
+			// Disconnect from the gateway when the application is closing
+			// This will close all connections to the network
+			console.log('Disconnect from Fabric gateway.');
+			gateway.disconnect();
+		}
+	} catch (error) {
+		console.error(`******** FAILED to run the application: ${error}`);
+	}
+}
 async function getAllSupplyAndDemand() {
 	try {
 		// build an in memory object with the network configuration (also known as a connection profile)
@@ -204,10 +269,12 @@ async function getAllSupplyAndDemand() {
 			// Let's try a query type operation (function).
 			// This will be sent to just one peer and the results will be shown.
 			console.log('\n--> Evaluate Transaction: queryAllProducts, function returns the current product on the ledger');
-			let result = await contract.evaluateTransaction('GetAllAssets');
+			let result = await contract.evaluateTransaction('GetAllProducts');
 			//console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 			if (`${result}` !== '') {
-				console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+				//console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+				console.log('\n------------SUCCESS--------------');
+				
 				return prettyJSONString(result.toString());
 
 			}
@@ -224,5 +291,5 @@ async function getAllSupplyAndDemand() {
 		console.error(`****666**** FAILED to run the application: ${error}`);
 	}
 }
-module.exports = { enrollInit , createSupply, getAllSupplyAndDemand}
+module.exports = { enrollInit , createSupply, getAllSupplyAndDemand, createPurchase }
 

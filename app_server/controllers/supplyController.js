@@ -42,11 +42,30 @@ module.exports.callCreateSupply = (req, res) => {
             });
         })
 }
+module.exports.callPurchase = (req, res) => {
+    hlfOperations.createPurchase().then(() => {
+        console.log('supply purchased')
+        //console.log(res)
+        return res.status(200).json({
+            status: 'ok'
+        });
+        
 
+    })
+        .catch(e => {
+            console.log('create event error: \n');
+            console.log(e);
+            console.log(e.stack);
+            return res.status(500).json({
+                status: 'error',
+                message: 'An error occurred trying to process your request',
+            });
+        })
+}
 module.exports.callGetAllSupplyAndDemand = function (req, res) {
     //console.log('aaaaaaaaaaaa')
     hlfOperations.getAllSupplyAndDemand().then(result=>{
-        console.log('getAllTransactions=' +  result )
+        //console.log('getAllTransactions=' +  result )
       res.render('supplylist', { result: JSON.parse(result) });
 
     })

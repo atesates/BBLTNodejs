@@ -5,6 +5,7 @@ var ctrlSupply = require('../controllers/supplyController.js');
 
 router.get('/',ctrlSupply.indexGet);
 router.get('/callcreatesupply', ctrlSupply.callCreateSupply);
+router.get('/callpurchase', ctrlSupply.callPurchase);
 router.get('/supplylist', ctrlSupply.callGetAllSupplyAndDemand);
 
 module.exports = router;

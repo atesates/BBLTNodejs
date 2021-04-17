@@ -1,0 +1,3 @@
+Method,Name,Error,Occurrences
+GET,/supply/callcreatesupply,"('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",255
+GET,/supply/callcreatesupply,"('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))",53
